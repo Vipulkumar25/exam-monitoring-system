@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Lockdown Control Panel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: 380px;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 3px solid #667eea;
+    }
+
+    .header h2 {
+      font-size: 22px;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+
+    .header p {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .content {
+      background: white;
+      padding: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-danger {
+      background: #ff4757;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #ee5a6f;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
+    }
+
+    .btn-success {
+      background: #2ed573;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #26d467;
+    }
+
+    #status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+    }
+
+    .status-item {
+      margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-label {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .status-value {
+      color: #667eea;
+      font-weight: bold;
+    }
+
+    .status-blocked {
+      color: #ff4757 !important;
+    }
+
+    .status-ok {
+      color: #2ed573 !important;
+    }
+
+    .info-text {
+      font-size: 11px;
+      color: #888;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e0e0e0;
+      margin: 15px 0;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .icon {
+      margin-right: 5px;
+    }
+
+    .monitoring-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ed573;
+      animation: pulse 2s infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+      font-size: 11px;
+      color: #555;
+    }
+
+    .feature-item::before {
+      content: "✓";
+      color: #2ed573;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+
+    .warning-badge {
+      background: #ff4757;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>🔒 Exam Lockdown</h2>
+    <p>Advanced Exam Monitoring System v3.0</p>
+  </div>
+
+  <div class="content">
+    <div class="section">
+      <div class="section-title">Student Identification</div>
+      <label for="studentId">
+        <span class="icon">👤</span>Student ID
+      </label>
+      <input id="studentId" type="text" placeholder="Enter student ID" autocomplete="off">
+      <button id="saveBtn" class="btn-primary">
+        <span class="icon">💾</span>Save Student ID
+      </button>
+      <p class="info-text">
+        This ID will be monitored for exam infractions and violations.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">
+        <span class="monitoring-indicator"></span>Monitoring Status
+      </div>
+      <div id="status">
+        <div class="status-item">
+          <span class="status-label">Status:</span>
+          <span class="status-value">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">Admin Controls</div>
+      <div class="button-group">
+        <button id="viewAllBtn" class="btn-secondary">
+          <span class="icon">📊</span>View Data
+        </button>
+        <button id="refreshBtn" class="btn-secondary">
+          <span class="icon">🔄</span>Refresh
+        </button>
+      </div>
+      <button id="unblockBtn" class="btn-success">
+        <span class="icon">✅</span>Unblock Current ID
+      </button>
+      <button id="clearAllBtn" class="btn-danger">
+        <span class="icon">🗑️</span>Clear All Data
+      </button>
+      <p class="info-text">
+        <strong>Warning:</strong> Admin controls should only be used by authorized personnel.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">Monitoring Features</div>
+      <div style="background: #f8f9fa; padding: 12px; border-radius: 6px;">
+        <div style="font-weight: 600; margin-bottom: 8px; color: #667eea;">Core Monitoring:</div>
+        <div class="feature-item">Tab switching detection</div>
+        <div class="feature-item">Camera presence verification</div>
+        <div class="feature-item">Face detection (single face)</div>
+        <div class="feature-item">Multiple faces detection</div>
+        <div class="feature-item">Eye movement tracking</div>
+        <div class="feature-item">Background audio detection</div>
+        <div class="feature-item">Copy/paste prevention</div>
+        <div class="feature-item">Navigation blocking</div>
+        <div class="feature-item">External app detection</div>
+        
+        <div style="font-weight: 600; margin-top: 12px; margin-bottom: 8px; color: #ff4757;">
+          🆕 New Features:
+          <span class="warning-badge">v3.0</span>
+        </div>
+        <div class="feature-item" style="color: #ff4757; font-weight: 600;">
+          Screen sharing detection
+        </div>
+        <div class="feature-item" style="color: #ff4757; font-weight: 600;">
+          Multiple monitors detection
+        </div>
+        
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0;">
+          <div style="font-size: 11px; color: #666;">
+            <strong>Screen Sharing Blocked:</strong><br>
+            • AnyDesk<br>
+            • TeamViewer<br>
+            • Quick Assist<br>
+            • Chrome Remote Desktop<br>
+            • Zoom Screen Share<br>
+            • And other remote tools
+          </div>
+        </div>
+        
+        <div style="margin-top: 10px; padding: 8px; background: #fff3cd; border-radius: 4px;">
+          <div style="font-size: 10px; color: #856404; font-weight: 600;">
+            ⚠️ Warning Threshold: 2 violations before ID block
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
